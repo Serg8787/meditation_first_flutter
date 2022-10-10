@@ -23,8 +23,8 @@ class _MeditionScreenState extends State<MeditionScreen> {
         imagePath: "meditions_images/ocean.jpeg"),
     ItemMeditiion(
         name: "Waterwall",
-        audioPath: "medition_audio/waterwall.mp3",
-        imagePath: "meditions_images/waterwall.jpeg"),
+        audioPath: "medition_audio/waterfall.mp3",
+        imagePath: "meditions_images/waterfall.jpeg"),
     ItemMeditiion(
         name: "Wind",
         audioPath: "medition_audio/wind.mp3",
@@ -41,6 +41,11 @@ class _MeditionScreenState extends State<MeditionScreen> {
 
           return Container(
             height: 100,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(3),
+              image: DecorationImage(
+                  fit: BoxFit.fitWidth,image: AssetImage(meditions[index].imagePath))
+            ),
             child: ListTile(
               title: Text(meditions[index].name),
               leading: IconButton(icon: Icon(Icons.play_circle),
