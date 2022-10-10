@@ -35,26 +35,20 @@ class _MeditionScreenState extends State<MeditionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: ListView(
-          physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-          children: [
-            Container(
-              height: 50,
-              color: Colors.orange,
-              child: Text(meditions[0].name),
+        child: ListView.builder(
+            itemCount: meditions.length,
+            itemBuilder: (context, index){
+
+          return Container(
+            height: 100,
+            child: ListTile(
+              title: Text(meditions[index].name),
+              leading: IconButton(icon: Icon(Icons.play_circle),
+              onPressed: (){}),
+
             ),
-            Container(
-              height: 50,
-              color: Colors.green,
-              child: Text(meditions[1].name),
-            ),
-            Container(
-              height: 50,
-              color: Colors.blue,
-              child: Text(meditions[2].name),
-            ),
-          ],
-        ),
+          );
+        }),
       ),
     );
   }
