@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:medition_app/model/item_model.dart';
-import 'package:just_audio/just_audio.dart';
 
 class MeditionScreen extends StatefulWidget {
   @override
@@ -32,9 +31,6 @@ class _MeditionScreenState extends State<MeditionScreen> {
         imagePath: "meditions_images/wind.jpeg")
   ];
 
-  final AudioPlayer audioPlayer = AudioPlayer();
-  int? playerIndex;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,25 +39,18 @@ class _MeditionScreenState extends State<MeditionScreen> {
             itemCount: meditions.length,
             itemBuilder: (context, index){
 
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              height: 100,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(3),
-                image: DecorationImage(
-                    fit: BoxFit.fitWidth,image: AssetImage(meditions[index].imagePath))
-              ),
-              child: ListTile(
-                title: Text(meditions[index].name),
-                leading: IconButton(icon: Icon(Icons.play_circle),
-                onPressed: (){
-                  audioPlayer.setAsset(meditions[index].audioPath);
-                  audioPlayer.play();
+          return Container(
+            height: 100,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(3),
+              image: DecorationImage(
+                  fit: BoxFit.fitWidth,image: AssetImage(meditions[index].imagePath))
+            ),
+            child: ListTile(
+              title: Text(meditions[index].name),
+              leading: IconButton(icon: Icon(Icons.play_circle),
+              onPressed: (){}),
 
-                }),
-
-              ),
             ),
           );
         }),
