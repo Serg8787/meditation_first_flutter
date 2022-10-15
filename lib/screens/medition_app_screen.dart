@@ -34,6 +34,7 @@ class _MeditionScreenState extends State<MeditionScreen> {
 
   final AudioPlayer audioPlayer = AudioPlayer();
   int? playIndex;
+
   // Widget showIcon(int currentIndex){
   //   if(playIndex == currentIndex){
   //       return const FaIcon(FontAwesomeIcons.stop);
@@ -60,21 +61,35 @@ class _MeditionScreenState extends State<MeditionScreen> {
                 child: ListTile(
                   title: Text(meditions[index].name),
                   leading: IconButton(
-                      icon: playIndex == index ? FaIcon(FontAwesomeIcons.stop):FaIcon(FontAwesomeIcons.play),
-                      onPressed: () {
+                      icon: playIndex == index
+                          ? const FaIcon(FontAwesomeIcons.stop)
+                          : const FaIcon(FontAwesomeIcons.play),
+                      onPressed: () async {
                         if (playIndex == index) {
-
                           setState(() {
                             playIndex = null;
                             audioPlayer.stop();
                           });
                         } else {
-                          audioPlayer.setAsset(meditions[index].audioPath);
-                          audioPlayer.play();
+                          try {
+                            await audioPlayer
+                                .setAsset(meditions[index].audioPath)
+                                .catchError((onError) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  backgroundColor: Colors.red.withOpacity(0.5),
+                                  content: const Text("Ошибка произведениея"),
+                                ),
+                              );
+                            });
+                            audioPlayer.play();
 
-                          setState(() {
-                            playIndex = index;
-                          });
+                            setState(() {
+                              playIndex = index;
+                            });
+                          } catch (error) {
+                            print(error);
+                          }
                         }
                       }),
                 ),
