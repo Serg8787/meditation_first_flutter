@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:medition_app/model/item_model.dart';
 
@@ -8,7 +9,6 @@ class MeditionScreen extends StatefulWidget {
 }
 
 class _MeditionScreenState extends State<MeditionScreen> {
-
   final List<ItemMeditiion> meditions = [
     ItemMeditiion(
         name: "Forest",
@@ -33,6 +33,15 @@ class _MeditionScreenState extends State<MeditionScreen> {
   ];
 
   final AudioPlayer audioPlayer = AudioPlayer();
+  int? playIndex;
+  // Widget showIcon(int currentIndex){
+  //   if(playIndex == currentIndex){
+  //       return const FaIcon(FontAwesomeIcons.stop);
+  //   } else {
+  //   return const FaIcon(FontAwesomeIcons.play);
+  //
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -40,28 +49,37 @@ class _MeditionScreenState extends State<MeditionScreen> {
       body: SafeArea(
         child: ListView.builder(
             itemCount: meditions.length,
-            itemBuilder: (context, index){
+            itemBuilder: (context, index) {
+              return Container(
+                height: 100,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(3),
+                    image: DecorationImage(
+                        fit: BoxFit.fitWidth,
+                        image: AssetImage(meditions[index].imagePath))),
+                child: ListTile(
+                  title: Text(meditions[index].name),
+                  leading: IconButton(
+                      icon: playIndex == index ? FaIcon(FontAwesomeIcons.stop):FaIcon(FontAwesomeIcons.play),
+                      onPressed: () {
+                        if (playIndex == index) {
 
-          return Container(
-            height: 100,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(3),
-              image: DecorationImage(
-                  fit: BoxFit.fitWidth,image: AssetImage(meditions[index].imagePath))
-            ),
-            child: ListTile(
-              title: Text(meditions[index].name),
-              leading: IconButton(icon: Icon(Icons.play_circle),
-              onPressed: (){
+                          setState(() {
+                            playIndex = null;
+                            audioPlayer.stop();
+                          });
+                        } else {
+                          audioPlayer.setAsset(meditions[index].audioPath);
+                          audioPlayer.play();
 
-                audioPlayer.setAsset(meditions[index].audioPath);
-                audioPlayer.play();
-
-              }),
-
-            ),
-          );
-        }),
+                          setState(() {
+                            playIndex = index;
+                          });
+                        }
+                      }),
+                ),
+              );
+            }),
       ),
     );
   }
