@@ -51,47 +51,50 @@ class _MeditionScreenState extends State<MeditionScreen> {
         child: ListView.builder(
             itemCount: meditions.length,
             itemBuilder: (context, index) {
-              return Container(
-                height: 100,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(3),
-                    image: DecorationImage(
-                        fit: BoxFit.fitWidth,
-                        image: AssetImage(meditions[index].imagePath))),
-                child: ListTile(
-                  title: Text(meditions[index].name),
-                  leading: IconButton(
-                      icon: playIndex == index
-                          ? const FaIcon(FontAwesomeIcons.stop)
-                          : const FaIcon(FontAwesomeIcons.play),
-                      onPressed: () async {
-                        if (playIndex == index) {
-                          setState(() {
-                            playIndex = null;
-                            audioPlayer.stop();
-                          });
-                        } else {
-                          try {
-                            await audioPlayer
-                                .setAsset(meditions[index].audioPath)
-                                .catchError((onError) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  backgroundColor: Colors.red.withOpacity(0.5),
-                                  content: const Text("Ошибка произведениея"),
-                                ),
-                              );
-                            });
-                            audioPlayer.play();
-
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  height: 100,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      image: DecorationImage(
+                          fit: BoxFit.fitWidth,
+                          image: AssetImage(meditions[index].imagePath))),
+                  child: ListTile(
+                    title: Text(meditions[index].name),
+                    leading: IconButton(
+                        icon: playIndex == index
+                            ? const FaIcon(FontAwesomeIcons.stop)
+                            : const FaIcon(FontAwesomeIcons.play),
+                        onPressed: () async {
+                          if (playIndex == index) {
                             setState(() {
-                              playIndex = index;
+                              playIndex = null;
+                              audioPlayer.stop();
                             });
-                          } catch (error) {
-                            print(error);
+                          } else {
+                            try {
+                              await audioPlayer
+                                  .setAsset(meditions[index].audioPath)
+                                  .catchError((onError) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    backgroundColor: Colors.red.withOpacity(0.5),
+                                    content: const Text("Ошибка произведениея"),
+                                  ),
+                                );
+                              });
+                              audioPlayer.play();
+
+                              setState(() {
+                                playIndex = index;
+                              });
+                            } catch (error) {
+                              print(error);
+                            }
                           }
-                        }
-                      }),
+                        }),
+                  ),
                 ),
               );
             }),
