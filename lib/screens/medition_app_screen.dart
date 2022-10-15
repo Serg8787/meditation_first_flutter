@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:medition_app/model/item_model.dart';
 
 class MeditionScreen extends StatefulWidget {
@@ -31,6 +32,8 @@ class _MeditionScreenState extends State<MeditionScreen> {
         imagePath: "meditions_images/wind.jpeg")
   ];
 
+  final AudioPlayer audioPlayer = AudioPlayer();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,7 +52,12 @@ class _MeditionScreenState extends State<MeditionScreen> {
             child: ListTile(
               title: Text(meditions[index].name),
               leading: IconButton(icon: Icon(Icons.play_circle),
-              onPressed: (){}),
+              onPressed: (){
+
+                audioPlayer.setAsset(meditions[index].audioPath);
+                audioPlayer.play();
+
+              }),
 
             ),
           );
